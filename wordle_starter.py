@@ -48,33 +48,66 @@ Wordle Rules:
 '''
 
 from  wordlist_helper import getWordList
-
 def pickHiddenWord():
     '''
     Returns a single word from the list of allowable words
     '''
     #words = getWordList()
-    return "MOTTO"
+
+    hiddenWord = "MOTTO"
+    hiddenWord.upper()
+    return hiddenWord
 
 def getPlayerGuess():
     '''
     Prompts for and returns a player guess.
     Returns a string guess that is exactly 5 uppercase letters.
     '''
-    return ""
+    bool = False
+    while not bool:
+        guess = str(input("Enter a valid five letter word: "))
+        if len(guess)!= 5 or guess not in getWordList():
+            continue
+        else:
+            bool = True
+    guess.upper()
+    return guess
 
 def generateFeedback(guess, hiddenWord, feedback):
     '''
     Returns a list of feeback based on comparing guess with the hidden word
     '''
+    hiddenList = list(hiddenWord)
+    # print(hiddenList)
+    guessList = list(guess)
+    # print(guessList)
+    currentFeedback = []
+    for x in range(len(hiddenList)):
+        if guessList[x] in hiddenList:
+            if guessList[x] == hiddenList[x]:
+                currentFeedback.append(guessList[x].upper())
 
+            else:
+                currentFeedback.append(guessList[x].lower())
+        else:
+            currentFeedback.append("-")
+        # print(currentFeedback)
+    tempList = [currentFeedback[:], guess]
+    feedback.append(tuple(tempList))
     return feedback
 
 def displayFeedback(feedback):
     '''
     Displays ongoing feedback guesses in a understndable manner
     '''
-    print(feedback)
+    grid = ""
+    for x in range(len(feedback)):
+        grid = "|"
+        for y in feedback[x][0]:
+            grid += y + "|"
+
+        grid += "   " + str(feedback[x][1])
+        print(grid)
 
 def playWordle():
     '''
@@ -95,14 +128,16 @@ def playWordle():
 
 
 if __name__ == "__main__":
-    hiddenWord, guesses = playWordle() #steps 0 -3
+    #hiddenWord, guesses = playWordle() #steps 0 -3
 
     #4) When the game is over, display the hidden word
-    print("The correct word was:"+hiddenWord)
+    #print("The correct word was:"+hiddenWord)
+    displayFeedback((generateFeedback("TRAIN", "MOTTO", [])))
+    # print(generateFeedback("MOTEL", "MOTTO", []))
+    # print(generateFeedback("ADIEU", "MOTTO", []))
+    #if hiddenWord!=guesses[len(guesses)-1]:
+    #    print("You lost.")
+    #else:
+    #    print("You won in "+str(len(guesses))+ " guesses!")
 
-    if hiddenWord!=guesses[len(guesses)-1]:
-        print("You lost.")
-    else:
-        print("You won in "+str(len(guesses))+ " guesses!")
-
-    print("Your guesses:", guesses)
+    #print("Your guesses:", guesses)
