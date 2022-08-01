@@ -47,18 +47,18 @@ Wordle Rules:
         -same feedback as for humans
 '''
 
-#from  wordlist_helper import getWordList
-import random 
+from  wordlist_helper import getWordList
 
 def pickHiddenWord():
     '''
     Returns a single word from the list of allowable words
     '''
     
-    #hiddenWord = random.choice(getWordList)
+    hiddenWord = str(getWordList())
 
     hiddenWord = "MOTTO"
-    hiddenWord.upper()
+
+    hiddenWord = hiddenWord.upper()
 
     return hiddenWord
 
@@ -73,12 +73,14 @@ def getPlayerGuess():
 
     while not bool:
         guess = str(input("Enter a valid five letter word: "))
-        if len(guess)!= 5 or guess not in getWordList():
+        if len(guess)!= 5: # or #guess not in getWordList(): if it doesnt return that one then not valid
             continue
         else:
             bool = True
 
-    guess.upper()
+    guess = guess.upper()
+
+    print(guess)
 
     return guess
 
@@ -121,46 +123,39 @@ def displayFeedback(feedback):
         print(grid)
 
 
-def playWordle(guess,feedback):
+def playWordle():
     '''
     Plays a complete game of wordle. Up to six guesses.
     Returns the hidden word an a list of all player guesses
     '''
+
     hiddenWord=pickHiddenWord()
-    guesses=[None]
+    feedback = []
+    guesses=[]
     GameOver = False
 
-    #include instructions here
+    print("\nWelcome to wordle! \nINSERT INSTRUCTIONS\n")
 
     while not GameOver: 
-        getPlayerGuess()
-        generateFeedback(getPlayerGuess(), hiddenWord, feedback)
+        guess = getPlayerGuess()
+        feedback = generateFeedback(guess, hiddenWord, feedback)
         displayFeedback(feedback)
         guesses.append(guess)
         if guess == hiddenWord or len(guesses) == 5: 
             GameOver = True
 
-
-    #0) Initialize necessary variables, including picking the hidden word
-
-    #1) Get a properly-formatted player guess
-
-    #2) Determine and display feedback on the guess
-
-    #3) Check to see if the game is over, if not, goto step #1
-
     return hiddenWord, guesses
 
 
 if __name__ == "__main__":
-    hiddenWord, guesses = playWordle("", []) #steps 0 -3
+    hiddenWord, guesses = playWordle() #steps 0 -3
 
     #4) When the game is over, display the hidden word
-    print("The correct word was:"+hiddenWord)
+    print("\nThe correct word was: "+hiddenWord)
 
     if hiddenWord!=guesses[len(guesses)-1]:
         print("You lost.")
     else:
         print("You won in "+str(len(guesses))+ " guesses!")
 
-    print("Your guesses:", guesses)
+    print("Your guesses:", guesses, "\n")
