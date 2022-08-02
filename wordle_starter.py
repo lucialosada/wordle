@@ -48,15 +48,16 @@ Wordle Rules:
 '''
 
 from  wordlist_helper import getWordList
+import random
 
 def pickHiddenWord():
     '''
     Returns a single word from the list of allowable words
     '''
-    
-    hiddenWord = str(getWordList())
 
-    hiddenWord = "MOTTO"
+    words = getWordList() 
+    
+    hiddenWord = random.choice(words)
 
     hiddenWord = hiddenWord.upper()
 
@@ -71,16 +72,16 @@ def getPlayerGuess():
     
     bool = False
 
+    words = getWordList()
+
     while not bool:
         guess = str(input("Enter a valid five letter word: "))
-        if len(guess)!= 5: # or #guess not in getWordList(): if it doesnt return that one then not valid
+        if len(guess)!= 5 or guess not in words:
             continue
         else:
             bool = True
 
     guess = guess.upper()
-
-    print(guess)
 
     return guess
 
