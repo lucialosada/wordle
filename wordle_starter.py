@@ -59,6 +59,8 @@ def pickHiddenWord():
     
     hiddenWord = random.choice(words)
 
+    hiddenWord = "amama"
+
     hiddenWord = hiddenWord.upper()
 
     return hiddenWord
@@ -76,7 +78,7 @@ def getPlayerGuess():
 
     while not bool:
         guess = str(input("Enter a valid five letter word: "))
-        if len(guess)!= 5 or guess not in words:
+        if len(guess)!= 5: #or guess not in words:
             continue
         else:
             bool = True
@@ -93,14 +95,29 @@ def generateFeedback(guess, hiddenWord, feedback):
     hiddenList = list(hiddenWord)
     guessList = list(guess)
     currentFeedback = []
+    count = 0 
+    bool = False
 
     for x in range(len(hiddenList)):
+        bool = False
+        count = 0 
         if guessList[x] in hiddenList:
+            for y in range(0, x):
+                if guessList[x] == guessList[y]:
+                    count += 1
+            if (count >= hiddenList.count(guessList[x])):
+                bool = True
             if guessList[x] == hiddenList[x]:
                 currentFeedback.append(guessList[x].upper())
-
+                if bool:
+                    for z in range(len(currentFeedback)):
+                        if currentFeedback[len(currentFeedback) - z - 1] == guessList[x].lower():
+                            currentFeedback[len(currentFeedback) - z - 1] = "-"
+                            break
+            elif guessList[x] and not bool:
+                    currentFeedback.append(guessList[x].lower())
             else:
-                currentFeedback.append(guessList[x].lower())
+                currentFeedback.append("-")
         else:
             currentFeedback.append("-")
 
@@ -135,14 +152,14 @@ def playWordle():
     guesses=[]
     GameOver = False
 
-    print("\nWelcome to wordle! \nINSERT INSTRUCTIONS\n")
+    print("\nWelcome to Wordle! \nYou have 6 chances to guess the hidden word. \nIf the letter is uppercase in the grid then it is at the correct position. \nIf the letter is lowercase, then that letter is in the hidden word but you placed it in the incorrect position. \nIf a dash appears, the letter is not in the word.\n")
 
     while not GameOver: 
         guess = getPlayerGuess()
         feedback = generateFeedback(guess, hiddenWord, feedback)
         displayFeedback(feedback)
         guesses.append(guess)
-        if guess == hiddenWord or len(guesses) == 5: 
+        if guess == hiddenWord or len(guesses) == 6: 
             GameOver = True
 
     return hiddenWord, guesses
