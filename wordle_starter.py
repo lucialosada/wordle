@@ -78,7 +78,7 @@ def getPlayerGuess():
 
     while not bool:
         guess = str(input("Enter a valid five letter word: "))
-        if len(guess)!= 5: #or guess not in words:
+        if len(guess)!= 5 or guess not in words:
             continue
         else:
             bool = True
@@ -141,6 +141,20 @@ def displayFeedback(feedback):
         print(grid)
 
 
+def AIguess(feedback, guesses):  
+   
+    if len(guesses) == 0: 
+        guess = "ADIEU"
+    elif len(guesses) == 1: 
+        guess = "SPORT"
+    else: 
+        #implement strategy
+
+    #guess = guess.upper()
+
+    return guess
+
+
 def playWordle():
     '''
     Plays a complete game of wordle. Up to six guesses.
@@ -154,8 +168,13 @@ def playWordle():
 
     print("\nWelcome to Wordle! \nYou have 6 chances to guess the hidden word. \nIf the letter is uppercase in the grid then it is at the correct position. \nIf the letter is lowercase, then that letter is in the hidden word but you placed it in the incorrect position. \nIf a dash appears, the letter is not in the word.\n")
 
+    ai = bool("Activate AI? (true/false)")
+
     while not GameOver: 
-        guess = getPlayerGuess()
+        if ai == True: 
+            guess = AIguess(feedback, guesses)
+        elif ai == False:
+            guess = getPlayerGuess()
         feedback = generateFeedback(guess, hiddenWord, feedback)
         displayFeedback(feedback)
         guesses.append(guess)
